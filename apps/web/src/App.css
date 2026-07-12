@@ -612,7 +612,7 @@ td {
 }
 
 .escape-room-brick-wall {
-  --er-graffiti-opacity: 0.92;
+  --er-graffiti-opacity: 1;
   position: relative;
   overflow: hidden;
   padding: 1.1rem 1.1rem 4rem;
@@ -657,6 +657,19 @@ td {
   z-index: 0;
   overflow: hidden;
   opacity: var(--er-graffiti-opacity);
+  filter: saturate(1.25) contrast(1.1);
+}
+
+.escape-room-brick-wall .er-graffiti-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 14%, rgba(255, 67, 170, 0.35) 0 20%, transparent 42%),
+    radial-gradient(circle at 84% 12%, rgba(87, 222, 255, 0.28) 0 18%, transparent 44%),
+    radial-gradient(circle at 78% 56%, rgba(255, 87, 51, 0.24) 0 20%, transparent 46%),
+    radial-gradient(circle at 23% 66%, rgba(255, 130, 55, 0.2) 0 16%, transparent 42%);
+  opacity: 0.78;
 }
 
 .er-gfx {
@@ -664,8 +677,10 @@ td {
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  -webkit-user-select: none;
   user-select: none;
   line-height: 1;
+  mix-blend-mode: screen;
 }
 
 /* CMCSS — large pink/magenta tag, upper-left */
@@ -783,8 +798,13 @@ td {
 .er-play-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.er-exit-room-btn {
+  margin-left: auto;
 }
 
 .er-play-title {
@@ -812,22 +832,10 @@ td {
 
 .er-brick-board-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.75rem;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.er-graffiti-tag {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.25rem 0.7rem;
-  background: rgba(255, 70, 177, 0.18);
-  color: #ffe5f6;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .er-brick-board-note {
