@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
+import GamePortal, { type GameMode } from './GamePortal'
+import EscapeRoomGame from './EscapeRoomGame'
+import ResearchMissionGame from './ResearchMissionGame'
+import MiniGamePlay from './MiniGamePlay'
+import ScenarioGame from './ScenarioGame'
 
 type Lab = {
   id: string
@@ -80,11 +85,18 @@ type ParentGoal = {
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:4000'
 const SAVE_KEY = 'gc-science-save-v1'
 const AUTH_KEY = 'gc-science-auth-v1'
+const EXTRA_SAVE_KEY = 'gc-science-extra-v1'
 
 type SaveState = {
   playerName: string
   totalXp: number
   completedMissionIds: string[]
+}
+
+type ExtraSaveState = {
+  escapedRoomIds: string[]
+  completedResearchIds: string[]
+  completedScenarioIds: string[]
 }
 
 const defaultSave: SaveState = {
@@ -93,8 +105,15 @@ const defaultSave: SaveState = {
   completedMissionIds: [],
 }
 
+const defaultExtra: ExtraSaveState = {
+  escapedRoomIds: [],
+  completedResearchIds: [],
+  completedScenarioIds: [],
+}
+
 function App() {
   const [view, setView] = useState<'game' | 'teacher' | 'parent' | 'account'>('game')
+  const [gameMode, setGameMode] = useState<GameMode>('portal')
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<AuthUser | null>(null)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
@@ -107,6 +126,9 @@ function App() {
   const [playerName, setPlayerName] = useState<string>(defaultSave.playerName)
   const [totalXp, setTotalXp] = useState<number>(defaultSave.totalXp)
   const [completedMissionIds, setCompletedMissionIds] = useState<string[]>(defaultSave.completedMissionIds)
+  const [escapedRoomIds, setEscapedRoomIds] = useState<string[]>(defaultExtra.escapedRoomIds)
+  const [completedResearchIds, setCompletedResearchIds] = useState<string[]>(defaultExtra.completedResearchIds)
+  const [completedScenarioIds, setCompletedScenarioIds] = useState<string[]>(defaultExtra.completedScenarioIds)
   const [selectedLabId, setSelectedLabId] = useState<string>('')
   const [selectedMissionId, setSelectedMissionId] = useState<string>('')
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null)
@@ -170,6 +192,18 @@ function App() {
         localStorage.removeItem(SAVE_KEY)
       }
     }
+
+    const savedExtra = localStorage.getItem(EXTRA_SAVE_KEY)
+    if (savedExtra) {
+      try {
+        const parsed = JSON.parse(savedExtra) as ExtraSaveState
+        setEscapedRoomIds(parsed.escapedRoomIds ?? [])
+        setCompletedResearchIds(parsed.completedResearchIds ?? [])
+        setCompletedScenarioIds(parsed.completedScenarioIds ?? [])
+      } catch {
+        localStorage.removeItem(EXTRA_SAVE_KEY)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -227,6 +261,11 @@ function App() {
     }
     localStorage.setItem(SAVE_KEY, JSON.stringify(save))
   }, [playerName, totalXp, completedMissionIds])
+
+  useEffect(() => {
+    const extra: ExtraSaveState = { escapedRoomIds, completedResearchIds, completedScenarioIds }
+    localStorage.setItem(EXTRA_SAVE_KEY, JSON.stringify(extra))
+  }, [escapedRoomIds, completedResearchIds, completedScenarioIds])
 
   useEffect(() => {
     if (!token) {
@@ -380,14 +419,52 @@ function App() {
     if (completedMissionIds.includes('ecosystem-lab-boss')) badges.push('Ecosystem Strategist')
     if (completedMissionIds.includes('earth-lab-boss')) badges.push('Climate Commander')
     if (completedMissionIds.includes('human-impact-lab-boss')) badges.push('Planet Guardian')
+    if (escapedRoomIds.length >= 3) badges.push('Escape Artist')
+    if (escapedRoomIds.length === 6) badges.push('Master Escapist')
+    if (completedResearchIds.length >= 2) badges.push('Lead Researcher')
+    if (completedScenarioIds.length >= 2) badges.push('Scenario Scientist')
     return badges
-  }, [totalXp, completedMissionIds])
+  }, [totalXp, completedMissionIds, escapedRoomIds, completedResearchIds, completedScenarioIds])
 
   const completedCount = completedMissionIds.length
   const totalMissionCount = missions.length
 
+  const handleEscapeRoomComplete = (roomId: string, xpEarned: number) => {
+    if (!escapedRoomIds.includes(roomId)) {
+      setEscapedRoomIds((prev) => [...prev, roomId])
+      setTotalXp((prev) => prev + xpEarned)
+      setStatus(`Escaped! +${xpEarned} XP earned.`)
+    }
+  }
+
+  const handleResearchComplete = (missionId: string, xpEarned: number) => {
+    if (!completedResearchIds.includes(missionId)) {
+      setCompletedResearchIds((prev) => [...prev, missionId])
+      setTotalXp((prev) => prev + xpEarned)
+      setStatus(`Research report complete! +${xpEarned} XP earned.`)
+    }
+  }
+
+  const handleScenarioComplete = (scenarioId: string, xpEarned: number) => {
+    if (!completedScenarioIds.includes(scenarioId)) {
+      setCompletedScenarioIds((prev) => [...prev, scenarioId])
+      setTotalXp((prev) => prev + xpEarned)
+      setStatus(`Scenario complete! +${xpEarned} XP earned.`)
+    }
+  }
+
+  const handleMiniGameXp = (xp: number) => {
+    if (xp > 0) {
+      setTotalXp((prev) => prev + xp)
+      setStatus(`Mini-game complete! +${xp} XP earned.`)
+    }
+  }
+
   const resetProgress = () => {
     setCompletedMissionIds([])
+    setEscapedRoomIds([])
+    setCompletedResearchIds([])
+    setCompletedScenarioIds([])
     setTotalXp(0)
     setStatus('Progress reset. Academy rebooted.')
   }
@@ -594,13 +671,18 @@ function App() {
     await loadParentDashboard()
   }
 
+  const goToGamePortal = () => {
+    setView('game')
+    setGameMode('portal')
+  }
+
   return (
     <main className="screen">
       <header className="topbar">
         <div>
           <p className="eyebrow">Grade 6 Science Academy</p>
-          <h1>Science Academy: Full Campaign</h1>
-          <p className="subhead">Complete labs, defeat boss missions, and master Tennessee Grade 6 standards.</p>
+          <h1>Science Academy: Game Portal</h1>
+          <p className="subhead">Labs · Escape Rooms · Research Missions · Mini-Games · Scenarios</p>
         </div>
         <div className="player-panel">
           <label htmlFor="playerName">Scientist</label>
@@ -617,8 +699,8 @@ function App() {
       </header>
 
       <nav className="tabs">
-        <button type="button" className={view === 'game' ? 'tab active' : 'tab'} onClick={() => setView('game')}>
-          Game
+        <button type="button" className={view === 'game' ? 'tab active' : 'tab'} onClick={goToGamePortal}>
+          🎮 Game Portal
         </button>
         <button type="button" className={view === 'teacher' ? 'tab active' : 'tab'} onClick={() => setView('teacher')}>
           Teacher Dashboard
@@ -678,8 +760,52 @@ function App() {
         </section>
       )}
 
-      {view === 'game' && <section className="layout">
+      {view === 'game' && gameMode === 'portal' && (
+        <GamePortal
+          totalXp={totalXp}
+          completedMissionIds={completedMissionIds}
+          escapedRoomIds={escapedRoomIds}
+          completedResearchIds={completedResearchIds}
+          onSelect={(mode) => setGameMode(mode)}
+        />
+      )}
+
+      {view === 'game' && gameMode === 'escape-rooms' && (
+        <EscapeRoomGame
+          escapedRoomIds={escapedRoomIds}
+          onEscape={handleEscapeRoomComplete}
+          onBack={() => setGameMode('portal')}
+        />
+      )}
+
+      {view === 'game' && gameMode === 'research' && (
+        <ResearchMissionGame
+          completedResearchIds={completedResearchIds}
+          onComplete={handleResearchComplete}
+          onBack={() => setGameMode('portal')}
+        />
+      )}
+
+      {view === 'game' && gameMode === 'mini-games' && (
+        <MiniGamePlay
+          onXpEarned={handleMiniGameXp}
+          onBack={() => setGameMode('portal')}
+        />
+      )}
+
+      {view === 'game' && gameMode === 'scenarios' && (
+        <ScenarioGame
+          completedScenarioIds={completedScenarioIds}
+          onComplete={handleScenarioComplete}
+          onBack={() => setGameMode('portal')}
+        />
+      )}
+
+      {view === 'game' && gameMode === 'labs' && <section className="layout">
         <aside className="panel lab-list">
+          <button type="button" className="back-btn portal-back" onClick={() => setGameMode('portal')}>
+            ← Game Portal
+          </button>
           <h2>Academy Map</h2>
           {labs.map((lab) => {
             const unlocked = unlockedLabIds.has(lab.id)

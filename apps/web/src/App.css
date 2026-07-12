@@ -323,6 +323,531 @@ td {
   color: #1f7a8c;
 }
 
+/* ── Portal ─────────────────────────────────── */
+.portal-wrapper {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.portal-heading {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+  color: #17202a;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.game-card {
+  position: relative;
+  border: 2px solid #e0eaf2;
+  border-top: 5px solid var(--card-color, #1f7a8c);
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.25rem 1rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 0.4rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.game-card-badge {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--card-color, #1f7a8c);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
+.game-card-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.game-card-title {
+  font-size: 1.05rem;
+  color: #17202a;
+}
+
+.game-card-desc {
+  font-size: 0.82rem;
+  color: #486581;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.game-card-progress {
+  font-size: 0.75rem;
+  color: #1f7a8c;
+  font-weight: 600;
+  border-top: 1px solid #e0eaf2;
+  padding-top: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+/* ── Events Banner ───────────────────────────── */
+.portal-events {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+}
+
+.event-card.seasonal {
+  background: linear-gradient(135deg, #fff7e6, #ffe8c0);
+  border-color: #f28f3b;
+}
+
+.event-card.weekly {
+  background: linear-gradient(135deg, #e8f4fd, #c5e3fb);
+  border-color: #3a86ff;
+}
+
+.event-card.daily {
+  background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+  border-color: #38a169;
+}
+
+.event-card strong {
+  font-size: 0.9rem;
+  color: #17202a;
+}
+
+.event-card p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #486581;
+}
+
+.event-emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Portal Stats ────────────────────────────── */
+.portal-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-top: 1px dashed #d0dce8;
+  padding-top: 1rem;
+}
+
+.stat-chip {
+  background: #f4f9ff;
+  border: 1px solid #d0dce8;
+  border-radius: 12px;
+  padding: 0.5rem 0.9rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a91a8;
+}
+
+.stat-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #17202a;
+}
+
+/* ── Back button ─────────────────────────────── */
+.back-btn {
+  border: 1px solid #d0dce8;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #334e68;
+}
+
+.back-btn:hover {
+  background: #e7f0fb;
+}
+
+.portal-back {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* ── Escape Room lobby ───────────────────────── */
+.escape-lobby {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.escape-lobby-header {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.escape-lobby-desc {
+  color: #486581;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.escape-room-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.escape-room-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  border: 1px solid #d8dee8;
+  background: #f8fbff;
+  border-radius: 14px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background 0.12s, box-shadow 0.12s;
+}
+
+.escape-room-card:hover {
+  background: #edf4ff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.escape-room-card.escaped {
+  border-color: #38a169;
+  background: #f0fff4;
+}
+
+.er-card-emoji {
+  font-size: 2.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.er-card-body {
+  display: grid;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.er-card-body strong {
+  font-size: 1rem;
+  color: #17202a;
+}
+
+.er-card-tagline {
+  font-size: 0.82rem;
+  color: #486581;
+}
+
+.er-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.er-difficulty {
+  font-size: 0.75rem;
+  border: 1px solid #b6c2cf;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  color: #334e68;
+}
+
+.er-xp {
+  font-size: 0.75rem;
+  background: linear-gradient(135deg, #f4c542, #f28f3b);
+  color: #17202a;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+}
+
+.er-puzzles {
+  font-size: 0.75rem;
+  color: #7a91a8;
+}
+
+.escaped-badge {
+  font-size: 0.8rem;
+  color: #276749;
+  font-weight: 700;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* ── Escape Room Gameplay ────────────────────── */
+.escape-room-play {
+  display: grid;
+  gap: 1rem;
+}
+
+.er-play-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.er-play-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.er-progress-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.er-progress-step {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #d0dce8;
+  background: #f4f9ff;
+}
+
+.er-progress-step.done {
+  background: #f0fff4;
+  border-color: #38a169;
+  color: #276749;
+}
+
+.er-progress-step.active {
+  background: #fef3c7;
+  border-color: #d97706;
+  color: #92400e;
+  font-weight: 700;
+}
+
+.er-progress-step.locked {
+  opacity: 0.55;
+}
+
+.er-setting-box {
+  background: #f4f9ff;
+  border-left: 4px solid #3a86ff;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.er-setting-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #3a86ff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.35rem;
+}
+
+.er-locked-notice {
+  background: #1e293b;
+  color: #fbbf24;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+}
+
+.er-puzzle-card {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.85rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+.er-puzzle-header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.er-puzzle-step {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a91a8;
+}
+
+.er-clue {
+  font-style: italic;
+  color: #486581;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.er-puzzle-prompt {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #17202a;
+  margin: 0;
+}
+
+.er-result {
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.er-result.correct {
+  background: #f0fff4;
+  border-left: 4px solid #38a169;
+  color: #276749;
+}
+
+.er-result.incorrect {
+  background: #fff5f5;
+  border-left: 4px solid #e53e3e;
+  color: #9b2c2c;
+}
+
+.choice.wrong {
+  border-color: #e53e3e;
+  background: #fff5f5;
+}
+
+.choice.correct-flash {
+  border-color: #38a169;
+  background: #f0fff4;
+}
+
+.er-standard {
+  font-size: 0.75rem;
+  color: #7a91a8;
+  margin: 0;
+}
+
+/* ── Victory Screen ──────────────────────────── */
+.escape-victory {
+  max-width: 560px;
+  margin: 2rem auto;
+  text-align: center;
+  display: grid;
+  gap: 1rem;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  border: 2px solid #38a169;
+}
+
+.victory-icon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.victory-desc {
+  color: #486581;
+  margin: 0;
+}
+
+.victory-xp {
+  background: linear-gradient(135deg, #f4c542, #f28f3b);
+  color: #17202a;
+  font-weight: 800;
+  font-size: 1.3rem;
+  border-radius: 999px;
+  padding: 0.65rem 1.5rem;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.victory-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Mini-game ───────────────────────────────── */
+.mini-game-status {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.mini-score {
+  color: #1f7a8c;
+}
+
+.mini-timer {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 0.25rem 0.7rem;
+}
+
+.mini-timer.urgent {
+  background: #fff5f5;
+  border-color: #feb2b2;
+  color: #e53e3e;
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.mini-timer-bar {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mini-timer-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
@@ -338,6 +863,14 @@ td {
   }
 
   .mission-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-events {
     grid-template-columns: 1fr;
   }
 }
