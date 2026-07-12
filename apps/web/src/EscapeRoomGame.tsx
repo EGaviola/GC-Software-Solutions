@@ -83,7 +83,6 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       !roomState
       || roomState.solvedSteps.includes(index)
       || showResult !== null
-      || (roomState.activePuzzleIndex !== null && roomState.activePuzzleIndex !== index)
     ) return
     setRoomState({ ...roomState, activePuzzleIndex: index })
     setSelectedChoice(null)
@@ -199,7 +198,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
                 type="button"
                 className={`er-brick ${solved ? 'solved' : ''} ${active ? 'active' : ''}`}
                 onClick={() => openBrick(i)}
-                disabled={solved || showResult !== null || (roomState.activePuzzleIndex !== null && !active)}
+                disabled={solved || showResult !== null}
               >
                 <span className="er-brick-label">Brick {i + 1}</span>
                 <span className="er-brick-status">

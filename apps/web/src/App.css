@@ -647,14 +647,14 @@ td {
   line-height: 1;
 }
 
-/* CMCSS — large pink/magenta tag, bottom-left */
+/* CMCSS — large pink/magenta tag, upper-left */
 .er-gfx-cmcss {
-  bottom: 0.8rem;
-  left: 0.5rem;
-  font-size: 2.7rem;
-  color: rgba(255, 55, 180, 0.7);
-  text-shadow: 3px 3px 0 rgba(30, 10, 30, 0.55), 0 0 14px rgba(255, 90, 200, 0.38);
-  transform: rotate(-9deg);
+  top: 1.2rem;
+  left: 0.9rem;
+  font-size: 3.1rem;
+  color: rgba(255, 55, 180, 0.82);
+  text-shadow: 3px 3px 0 rgba(30, 10, 30, 0.55), 0 0 16px rgba(255, 90, 200, 0.42);
+  transform: rotate(-7deg);
 }
 
 /* science — cyan, top-right */
