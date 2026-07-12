@@ -173,18 +173,17 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         <span className="er-gfx er-gfx-know">KNOW</span>
       </div>
       <div className="er-play-header">
-        <button type="button" className="back-btn" onClick={exitToRoomList}>
-          ← Exit Room (⚠️ progress lost)
-        </button>
         <div className="er-play-title">
           <span>{selectedRoom.emoji}</span>
           <h2>{selectedRoom.title}</h2>
         </div>
+        <button type="button" className="back-btn er-exit-room-btn" onClick={exitToRoomList}>
+          ← Exit Room (⚠️ progress lost)
+        </button>
       </div>
 
       <div className="er-brick-board">
         <div className="er-brick-board-header">
-          <span className="er-graffiti-tag">CMCSS</span>
           <span className="er-brick-board-note">
             {currentPuzzle
               ? 'Question displayed — answer it correctly to unlock that brick.'
