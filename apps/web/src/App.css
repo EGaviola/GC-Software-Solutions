@@ -674,7 +674,7 @@ td {
 
 .er-gfx {
   position: absolute;
-  font-family: 'Bungee Shade', cursive;
+  font-family: 'Bungee Shade', display;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   -webkit-user-select: none;
