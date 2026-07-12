@@ -9,7 +9,7 @@ type Props = {
 
 type RoomState = {
   roomId: string
-  currentStep: number
+  activePuzzleIndex: number | null
   solvedSteps: number[]
   wrongAttempts: number[]
   escaped: boolean
@@ -29,7 +29,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
     setSelectedRoomId(room.id)
     setRoomState({
       roomId: room.id,
-      currentStep: 0,
+      activePuzzleIndex: null,
       solvedSteps: [],
       wrongAttempts: [],
       escaped: false,
@@ -39,11 +39,11 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
   }
 
   const submitAnswer = () => {
-    if (!roomState || !selectedRoom || selectedChoice === null) return
-    const puzzle = selectedRoom.puzzles[roomState.currentStep]
+    if (!roomState || !selectedRoom || roomState.activePuzzleIndex === null || selectedChoice === null) return
+    const puzzle = selectedRoom.puzzles[roomState.activePuzzleIndex]
     if (selectedChoice === puzzle.answerIndex) {
-      const newSolved = [...roomState.solvedSteps, roomState.currentStep]
-      const isLastPuzzle = roomState.currentStep === selectedRoom.puzzles.length - 1
+      const newSolved = [...roomState.solvedSteps, roomState.activePuzzleIndex]
+      const isLastPuzzle = newSolved.length === selectedRoom.puzzles.length
       setShowResult('correct')
       setTimeout(() => {
         if (isLastPuzzle) {
@@ -53,7 +53,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         } else {
           setRoomState({
             ...roomState,
-            currentStep: roomState.currentStep + 1,
+            activePuzzleIndex: null,
             solvedSteps: newSolved,
           })
         }
@@ -62,7 +62,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       }, 1800)
     } else {
       setShowResult('incorrect')
-      const newWrong = [...roomState.wrongAttempts, roomState.currentStep]
+      const newWrong = [...roomState.wrongAttempts, roomState.activePuzzleIndex]
       setRoomState({ ...roomState, wrongAttempts: newWrong })
       setTimeout(() => {
         setSelectedChoice(null)
@@ -74,6 +74,18 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
   const exitToRoomList = () => {
     setSelectedRoomId(null)
     setRoomState(null)
+    setSelectedChoice(null)
+    setShowResult(null)
+  }
+
+  const openBrick = (index: number) => {
+    if (
+      !roomState
+      || roomState.solvedSteps.includes(index)
+      || showResult !== null
+      || (roomState.activePuzzleIndex !== null && roomState.activePuzzleIndex !== index)
+    ) return
+    setRoomState({ ...roomState, activePuzzleIndex: index })
     setSelectedChoice(null)
     setShowResult(null)
   }
@@ -142,12 +154,15 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
     )
   }
 
-  const currentPuzzle = selectedRoom.puzzles[roomState.currentStep]
+  const currentPuzzle = roomState.activePuzzleIndex !== null
+    ? selectedRoom.puzzles[roomState.activePuzzleIndex]
+    : null
+  const activePuzzleNumber = roomState.activePuzzleIndex !== null ? roomState.activePuzzleIndex + 1 : null
   const totalPuzzles = selectedRoom.puzzles.length
   const solvedCount = roomState.solvedSteps.length
 
   return (
-    <div className="escape-room-play">
+    <div className="escape-room-play escape-room-brick-wall">
       <div className="er-play-header">
         <button type="button" className="back-btn" onClick={exitToRoomList}>
           ← Exit Room (⚠️ progress lost)
@@ -158,13 +173,43 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         </div>
       </div>
 
+      <div className="er-brick-board">
+        <div className="er-brick-board-header">
+          <span className="er-graffiti-tag">CMCSS</span>
+          <span className="er-brick-board-note">
+            {currentPuzzle ? 'Question exposed — solve it to crack open another brick.' : 'Click a brick to reveal the next hidden question.'}
+          </span>
+        </div>
+
+        <div className="er-brick-grid">
+          {selectedRoom.puzzles.map((puzzle, i) => {
+            const solved = roomState.solvedSteps.includes(i)
+            const active = i === roomState.activePuzzleIndex
+            return (
+              <button
+                key={puzzle.id}
+                type="button"
+                className={`er-brick ${solved ? 'solved' : ''} ${active ? 'active' : ''}`}
+                onClick={() => openBrick(i)}
+                disabled={solved || showResult !== null || (roomState.activePuzzleIndex !== null && !active)}
+              >
+                <span className="er-brick-label">Brick {i + 1}</span>
+                <span className="er-brick-status">
+                  {solved ? 'Solved' : active ? 'Question exposed' : 'Tap to reveal'}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
       <div className="er-progress-bar">
         {selectedRoom.puzzles.map((puzzle, i) => (
           <div
             key={puzzle.id}
-            className={`er-progress-step ${roomState.solvedSteps.includes(i) ? 'done' : i === roomState.currentStep ? 'active' : 'locked'}`}
+            className={`er-progress-step ${roomState.solvedSteps.includes(i) ? 'done' : i === roomState.activePuzzleIndex ? 'active' : 'locked'}`}
           >
-            {roomState.solvedSteps.includes(i) ? '✅' : i === roomState.currentStep ? '🔓' : '🔒'}
+            {roomState.solvedSteps.includes(i) ? '✅' : i === roomState.activePuzzleIndex ? '🔓' : '🔒'}
             <span>Puzzle {i + 1}</span>
           </div>
         ))}
@@ -179,56 +224,68 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         🔒 {totalPuzzles - solvedCount} puzzle{totalPuzzles - solvedCount !== 1 ? 's' : ''} remaining before you can escape
       </div>
 
-      <div className="er-puzzle-card">
-        <div className="er-puzzle-header">
-          <span className="er-puzzle-step">Puzzle {roomState.currentStep + 1} of {totalPuzzles}</span>
-          <h3>{currentPuzzle.title}</h3>
-        </div>
-        <p className="er-clue">{currentPuzzle.clue}</p>
-        <p className="er-puzzle-prompt">{currentPuzzle.prompt}</p>
+      {currentPuzzle ? (
+        <div className="er-puzzle-card">
+          <div className="er-puzzle-header">
+            <span className="er-puzzle-step">Puzzle {activePuzzleNumber} of {totalPuzzles}</span>
+            <h3>{currentPuzzle.title}</h3>
+          </div>
+          <p className="er-clue">{currentPuzzle.clue}</p>
+          <p className="er-puzzle-prompt">{currentPuzzle.prompt}</p>
 
-        <div className="choices">
-          {currentPuzzle.choices.map((choice, index) => (
+          <div className="choices">
+            {currentPuzzle.choices.map((choice, index) => (
+              <button
+                key={choice}
+                type="button"
+                className={`choice ${selectedChoice === index ? 'picked' : ''} ${
+                  showResult === 'incorrect' && selectedChoice === index ? 'wrong' : ''
+                } ${showResult === 'correct' && index === currentPuzzle.answerIndex ? 'correct-flash' : ''}`}
+                onClick={() => showResult === null && setSelectedChoice(index)}
+                disabled={showResult !== null}
+              >
+                {choice}
+              </button>
+            ))}
+          </div>
+
+          {showResult === 'correct' && (
+            <div className="er-result correct" aria-live="polite">
+              ✅ Correct! Lock opened. <em>{currentPuzzle.explanation}</em>
+            </div>
+          )}
+
+          {showResult === 'incorrect' && (
+            <div className="er-result incorrect" aria-live="polite">
+              ❌ Incorrect. You cannot leave until you solve this. Study the clue and try again.
+              <br /><em>{currentPuzzle.explanation}</em>
+            </div>
+          )}
+
+          {showResult === null && (
             <button
-              key={choice}
               type="button"
-              className={`choice ${selectedChoice === index ? 'picked' : ''} ${
-                showResult === 'incorrect' && selectedChoice === index ? 'wrong' : ''
-              } ${showResult === 'correct' && index === currentPuzzle.answerIndex ? 'correct-flash' : ''}`}
-              onClick={() => showResult === null && setSelectedChoice(index)}
-              disabled={showResult !== null}
+              className="submit"
+              onClick={submitAnswer}
+              disabled={selectedChoice === null}
             >
-              {choice}
+              Submit Answer
             </button>
-          ))}
+          )}
+
+          <p className="er-standard">Science standard: {currentPuzzle.standard}</p>
         </div>
-
-        {showResult === 'correct' && (
-          <div className="er-result correct" aria-live="polite">
-            ✅ Correct! Lock opened. <em>{currentPuzzle.explanation}</em>
+      ) : (
+        <div className="er-puzzle-card er-hidden-puzzle-card">
+          <div className="er-puzzle-header">
+            <span className="er-hidden-status">Question hidden</span>
+            <h3>Choose a brick to reveal the next challenge</h3>
           </div>
-        )}
-
-        {showResult === 'incorrect' && (
-          <div className="er-result incorrect" aria-live="polite">
-            ❌ Incorrect. You cannot leave until you solve this. Study the clue and try again.
-            <br /><em>{currentPuzzle.explanation}</em>
-          </div>
-        )}
-
-        {showResult === null && (
-          <button
-            type="button"
-            className="submit"
-            onClick={submitAnswer}
-            disabled={selectedChoice === null}
-          >
-            Submit Answer
-          </button>
-        )}
-
-        <p className="er-standard">Science standard: {currentPuzzle.standard}</p>
-      </div>
+          <p className="er-clue">
+            Each brick hides a science question. Solve the exposed question correctly, then return to the wall and crack open another brick.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
