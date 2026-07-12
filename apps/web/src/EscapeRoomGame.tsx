@@ -157,6 +157,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
   const currentPuzzle = roomState.activePuzzleIndex !== null
     ? selectedRoom.puzzles[roomState.activePuzzleIndex]
     : null
+  const activePuzzleNumber = roomState.activePuzzleIndex !== null ? roomState.activePuzzleIndex + 1 : null
   const totalPuzzles = selectedRoom.puzzles.length
   const solvedCount = roomState.solvedSteps.length
 
@@ -226,7 +227,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       {currentPuzzle ? (
         <div className="er-puzzle-card">
           <div className="er-puzzle-header">
-            <span className="er-puzzle-step">Puzzle {roomState.activePuzzleIndex! + 1} of {totalPuzzles}</span>
+            <span className="er-puzzle-step">Puzzle {activePuzzleNumber} of {totalPuzzles}</span>
             <h3>{currentPuzzle.title}</h3>
           </div>
           <p className="er-clue">{currentPuzzle.clue}</p>
