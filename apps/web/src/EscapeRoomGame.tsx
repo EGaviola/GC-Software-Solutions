@@ -169,6 +169,8 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         <span className="er-gfx er-gfx-grade">6TH GRADE</span>
         <span className="er-gfx er-gfx-solve">SOLVE IT</span>
         <span className="er-gfx er-gfx-break">BREAK OUT</span>
+        <span className="er-gfx er-gfx-think">THINK</span>
+        <span className="er-gfx er-gfx-know">KNOW</span>
       </div>
       <div className="er-play-header">
         <button type="button" className="back-btn" onClick={exitToRoomList}>
