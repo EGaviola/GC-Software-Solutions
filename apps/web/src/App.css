@@ -674,13 +674,17 @@ td {
 
 .er-gfx {
   position: absolute;
-  font-weight: 900;
+  font-family: 'Bungee Shade', cursive;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   -webkit-user-select: none;
   user-select: none;
   line-height: 1;
   mix-blend-mode: screen;
+  text-shadow:
+    4px 4px #ff00ff,
+    -4px -4px #00ffff,
+    0 0 20px yellow;
 }
 
 /* CMCSS — large pink/magenta tag, upper-left */
@@ -689,11 +693,6 @@ td {
   left: 0.9rem;
   font-size: 3.8rem;
   color: #ff37b4;
-  text-shadow:
-    -3px -3px 0 #1a0010, 0 -3px 0 #1a0010, 3px -3px 0 #1a0010,
-    -3px 0 0 #1a0010, 3px 0 0 #1a0010,
-    -3px 3px 0 #1a0010, 0 3px 0 #1a0010, 3px 3px 0 #1a0010,
-    0 0 28px rgba(255, 55, 180, 0.75), 0 0 55px rgba(255, 55, 180, 0.3);
   transform: rotate(-7deg);
 }
 
@@ -703,11 +702,6 @@ td {
   right: 0.8rem;
   font-size: 2.2rem;
   color: #57deff;
-  text-shadow:
-    -3px -3px 0 #001a22, 0 -3px 0 #001a22, 3px -3px 0 #001a22,
-    -3px 0 0 #001a22, 3px 0 0 #001a22,
-    -3px 3px 0 #001a22, 0 3px 0 #001a22, 3px 3px 0 #001a22,
-    0 0 22px rgba(87, 222, 255, 0.65), 0 0 44px rgba(87, 222, 255, 0.3);
   transform: rotate(7deg);
 }
 
@@ -717,11 +711,6 @@ td {
   left: 1.2rem;
   font-size: 1.6rem;
   color: #ffde37;
-  text-shadow:
-    -2px -2px 0 #1a1400, 0 -2px 0 #1a1400, 2px -2px 0 #1a1400,
-    -2px 0 0 #1a1400, 2px 0 0 #1a1400,
-    -2px 2px 0 #1a1400, 0 2px 0 #1a1400, 2px 2px 0 #1a1400,
-    0 0 18px rgba(255, 222, 55, 0.6);
   transform: rotate(-4deg);
 }
 
@@ -731,11 +720,6 @@ td {
   right: 0.5rem;
   font-size: 1.3rem;
   color: #64ff94;
-  text-shadow:
-    -2px -2px 0 #001a0a, 0 -2px 0 #001a0a, 2px -2px 0 #001a0a,
-    -2px 0 0 #001a0a, 2px 0 0 #001a0a,
-    -2px 2px 0 #001a0a, 0 2px 0 #001a0a, 2px 2px 0 #001a0a,
-    0 0 18px rgba(100, 255, 148, 0.55);
   transform: rotate(11deg);
 }
 
@@ -745,11 +729,6 @@ td {
   left: -0.2rem;
   font-size: 1.8rem;
   color: #ff8237;
-  text-shadow:
-    -2px -2px 0 #1a0d00, 0 -2px 0 #1a0d00, 2px -2px 0 #1a0d00,
-    -2px 0 0 #1a0d00, 2px 0 0 #1a0d00,
-    -2px 2px 0 #1a0d00, 0 2px 0 #1a0d00, 2px 2px 0 #1a0d00,
-    0 0 20px rgba(255, 130, 55, 0.6);
   transform: rotate(-16deg);
 }
 
@@ -759,11 +738,6 @@ td {
   left: 50%;
   font-size: 1.4rem;
   color: #c878ff;
-  text-shadow:
-    -2px -2px 0 #1a0a2d, 0 -2px 0 #1a0a2d, 2px -2px 0 #1a0a2d,
-    -2px 0 0 #1a0a2d, 2px 0 0 #1a0a2d,
-    -2px 2px 0 #1a0a2d, 0 2px 0 #1a0a2d, 2px 2px 0 #1a0a2d,
-    0 0 20px rgba(200, 120, 255, 0.55);
   transform: translateX(-50%) rotate(3deg);
 }
 
@@ -773,11 +747,6 @@ td {
   right: 0.6rem;
   font-size: 2.4rem;
   color: #ff5733;
-  text-shadow:
-    -3px -3px 0 #1a0800, 0 -3px 0 #1a0800, 3px -3px 0 #1a0800,
-    -3px 0 0 #1a0800, 3px 0 0 #1a0800,
-    -3px 3px 0 #1a0800, 0 3px 0 #1a0800, 3px 3px 0 #1a0800,
-    0 0 26px rgba(255, 87, 51, 0.65), 0 0 50px rgba(255, 87, 51, 0.25);
   transform: rotate(-9deg);
 }
 
@@ -787,11 +756,6 @@ td {
   left: 1.5rem;
   font-size: 1.9rem;
   color: #3a9fff;
-  text-shadow:
-    -2px -2px 0 #00101a, 0 -2px 0 #00101a, 2px -2px 0 #00101a,
-    -2px 0 0 #00101a, 2px 0 0 #00101a,
-    -2px 2px 0 #00101a, 0 2px 0 #00101a, 2px 2px 0 #00101a,
-    0 0 22px rgba(58, 159, 255, 0.6);
   transform: rotate(8deg);
 }
 
