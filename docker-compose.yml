@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: gc-science-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gc_admin
+      POSTGRES_PASSWORD: gc_admin_pw
+      POSTGRES_DB: gc_science_game
+    ports:
+      - "5432:5432"
+    volumes:
+      - gc_science_pg:/var/lib/postgresql/data
+
+volumes:
+  gc_science_pg:
