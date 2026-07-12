@@ -165,7 +165,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
     <div className="escape-room-play escape-room-brick-wall">
       <div className="er-graffiti-layer" aria-hidden="true">
         <span className="er-gfx er-gfx-cmcss">CMCSS</span>
-        <span className="er-gfx er-gfx-science">science</span>
+        <span className="er-gfx er-gfx-science">SCIENCE</span>
         <span className="er-gfx er-gfx-escape">ESCAPE!</span>
         <span className="er-gfx er-gfx-grade">6TH GRADE</span>
         <span className="er-gfx er-gfx-solve">SOLVE IT</span>
