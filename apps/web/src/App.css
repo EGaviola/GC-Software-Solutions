@@ -664,6 +664,7 @@ td {
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  -webkit-user-select: none;
   user-select: none;
   line-height: 1;
 }
