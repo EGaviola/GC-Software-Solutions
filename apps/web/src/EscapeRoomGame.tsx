@@ -9,7 +9,7 @@ type Props = {
 
 type RoomState = {
   roomId: string
-  activePuzzleIndex: number | null
+  selectedPuzzleIndex: number | null
   solvedSteps: number[]
   wrongAttempts: number[]
   escaped: boolean
@@ -29,7 +29,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
     setSelectedRoomId(room.id)
     setRoomState({
       roomId: room.id,
-      activePuzzleIndex: null,
+      selectedPuzzleIndex: null,
       solvedSteps: [],
       wrongAttempts: [],
       escaped: false,
@@ -39,10 +39,10 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
   }
 
   const submitAnswer = () => {
-    if (!roomState || !selectedRoom || roomState.activePuzzleIndex === null || selectedChoice === null) return
-    const puzzle = selectedRoom.puzzles[roomState.activePuzzleIndex]
+    if (!roomState || !selectedRoom || roomState.selectedPuzzleIndex === null || selectedChoice === null) return
+    const puzzle = selectedRoom.puzzles[roomState.selectedPuzzleIndex]
     if (selectedChoice === puzzle.answerIndex) {
-      const newSolved = [...roomState.solvedSteps, roomState.activePuzzleIndex]
+      const newSolved = [...roomState.solvedSteps, roomState.selectedPuzzleIndex]
       const isLastPuzzle = newSolved.length === selectedRoom.puzzles.length
       setShowResult('correct')
       setTimeout(() => {
@@ -53,7 +53,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         } else {
           setRoomState({
             ...roomState,
-            activePuzzleIndex: null,
+            selectedPuzzleIndex: null,
             solvedSteps: newSolved,
           })
         }
@@ -62,7 +62,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       }, 1800)
     } else {
       setShowResult('incorrect')
-      const newWrong = [...roomState.wrongAttempts, roomState.activePuzzleIndex]
+      const newWrong = [...roomState.wrongAttempts, roomState.selectedPuzzleIndex]
       setRoomState({ ...roomState, wrongAttempts: newWrong })
       setTimeout(() => {
         setSelectedChoice(null)
@@ -83,9 +83,8 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       !roomState
       || roomState.solvedSteps.includes(index)
       || showResult !== null
-      || (roomState.activePuzzleIndex !== null && roomState.activePuzzleIndex !== index)
     ) return
-    setRoomState({ ...roomState, activePuzzleIndex: index })
+    setRoomState({ ...roomState, selectedPuzzleIndex: index })
     setSelectedChoice(null)
     setShowResult(null)
   }
@@ -154,10 +153,10 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
     )
   }
 
-  const currentPuzzle = roomState.activePuzzleIndex !== null
-    ? selectedRoom.puzzles[roomState.activePuzzleIndex]
+  const currentPuzzle = roomState.selectedPuzzleIndex !== null
+    ? selectedRoom.puzzles[roomState.selectedPuzzleIndex]
     : null
-  const activePuzzleNumber = roomState.activePuzzleIndex !== null ? roomState.activePuzzleIndex + 1 : null
+  const activePuzzleNumber = roomState.selectedPuzzleIndex !== null ? roomState.selectedPuzzleIndex + 1 : null
   const totalPuzzles = selectedRoom.puzzles.length
   const solvedCount = roomState.solvedSteps.length
 
@@ -185,25 +184,27 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         <div className="er-brick-board-header">
           <span className="er-graffiti-tag">CMCSS</span>
           <span className="er-brick-board-note">
-            {currentPuzzle ? 'Question exposed — solve it to crack open another brick.' : 'Click a brick to reveal the next hidden question.'}
+            {currentPuzzle
+              ? 'Question displayed — answer it correctly to unlock that brick.'
+              : 'Click any unsolved brick to display its question.'}
           </span>
         </div>
 
         <div className="er-brick-grid">
           {selectedRoom.puzzles.map((puzzle, i) => {
             const solved = roomState.solvedSteps.includes(i)
-            const active = i === roomState.activePuzzleIndex
+            const active = i === roomState.selectedPuzzleIndex
             return (
               <button
                 key={puzzle.id}
                 type="button"
                 className={`er-brick ${solved ? 'solved' : ''} ${active ? 'active' : ''}`}
                 onClick={() => openBrick(i)}
-                disabled={solved || showResult !== null || (roomState.activePuzzleIndex !== null && !active)}
+                disabled={solved || showResult !== null}
               >
                 <span className="er-brick-label">Brick {i + 1}</span>
                 <span className="er-brick-status">
-                  {solved ? 'Solved' : active ? 'Question exposed' : 'Tap to reveal'}
+                  {solved ? 'Unlocked' : active ? 'Question displayed' : 'Tap to display'}
                 </span>
               </button>
             )
@@ -215,9 +216,9 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
         {selectedRoom.puzzles.map((puzzle, i) => (
           <div
             key={puzzle.id}
-            className={`er-progress-step ${roomState.solvedSteps.includes(i) ? 'done' : i === roomState.activePuzzleIndex ? 'active' : 'locked'}`}
+            className={`er-progress-step ${roomState.solvedSteps.includes(i) ? 'done' : i === roomState.selectedPuzzleIndex ? 'active' : 'locked'}`}
           >
-            {roomState.solvedSteps.includes(i) ? '✅' : i === roomState.activePuzzleIndex ? '🔓' : '🔒'}
+            {roomState.solvedSteps.includes(i) ? '✅' : i === roomState.selectedPuzzleIndex ? '🔓' : '🔒'}
             <span>Puzzle {i + 1}</span>
           </div>
         ))}
@@ -290,7 +291,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
             <h3>Choose a brick to reveal the next challenge</h3>
           </div>
           <p className="er-clue">
-            Each brick hides a science question. Solve the exposed question correctly, then return to the wall and crack open another brick.
+            You can select any unsolved brick to display its question. A brick only unlocks after you answer its science question correctly.
           </p>
         </div>
       )}
