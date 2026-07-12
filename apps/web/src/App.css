@@ -637,7 +637,6 @@ td {
   z-index: 0;
   overflow: hidden;
   opacity: 0.96;
-  mix-blend-mode: screen;
 }
 
 .er-gfx {
@@ -647,7 +646,6 @@ td {
   text-transform: uppercase;
   user-select: none;
   line-height: 1;
-  filter: drop-shadow(0 2px 2px rgba(19, 8, 4, 0.5));
 }
 
 /* CMCSS — large pink/magenta tag, upper-left */
