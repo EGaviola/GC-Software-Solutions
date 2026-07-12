@@ -624,38 +624,87 @@ td {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 34px rgba(37, 19, 12, 0.3);
 }
 
-.escape-room-brick-wall::before,
-.escape-room-brick-wall::after {
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  opacity: 0.82;
-}
-
-.escape-room-brick-wall::before {
-  content: 'science';
-  top: 1rem;
-  right: 1.2rem;
-  color: rgba(87, 227, 255, 0.38);
-  font-size: 1.8rem;
-  transform: rotate(8deg);
-}
-
-.escape-room-brick-wall::after {
-  content: 'CMCSS';
-  left: 1.2rem;
-  bottom: 0.9rem;
-  color: rgba(255, 70, 177, 0.62);
-  text-shadow: 2px 2px 0 rgba(35, 14, 35, 0.4);
-  font-size: 2.3rem;
-  transform: rotate(-10deg);
-}
-
 .escape-room-brick-wall > * {
   position: relative;
   z-index: 1;
+}
+
+/* Graffiti art layer — sits behind all content */
+.escape-room-brick-wall .er-graffiti-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.er-gfx {
+  position: absolute;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  user-select: none;
+  line-height: 1;
+}
+
+/* CMCSS — large pink/magenta tag, bottom-left */
+.er-gfx-cmcss {
+  bottom: 0.8rem;
+  left: 0.5rem;
+  font-size: 2.7rem;
+  color: rgba(255, 55, 180, 0.7);
+  text-shadow: 3px 3px 0 rgba(30, 10, 30, 0.55), 0 0 14px rgba(255, 90, 200, 0.38);
+  transform: rotate(-9deg);
+}
+
+/* science — cyan, top-right */
+.er-gfx-science {
+  top: 0.7rem;
+  right: 0.8rem;
+  font-size: 1.8rem;
+  color: rgba(87, 222, 255, 0.44);
+  text-shadow: 2px 2px 0 rgba(10, 35, 50, 0.45);
+  transform: rotate(7deg);
+}
+
+/* ESCAPE! — yellow, upper-left */
+.er-gfx-escape {
+  top: 3rem;
+  left: 1.5rem;
+  font-size: 1.25rem;
+  color: rgba(255, 222, 55, 0.54);
+  text-shadow: 1px 1px 0 rgba(40, 30, 0, 0.5);
+  transform: rotate(-4deg);
+}
+
+/* 6TH GRADE — green, lower-right */
+.er-gfx-grade {
+  bottom: 3.2rem;
+  right: 0.5rem;
+  font-size: 1.05rem;
+  color: rgba(100, 255, 148, 0.46);
+  text-shadow: 1px 1px 0 rgba(0, 25, 10, 0.4);
+  transform: rotate(11deg);
+}
+
+/* SOLVE IT — orange, mid-left edge */
+.er-gfx-solve {
+  top: 44%;
+  left: -0.5rem;
+  font-size: 1.45rem;
+  color: rgba(255, 130, 55, 0.37);
+  text-shadow: 2px 2px 0 rgba(50, 20, 0, 0.38);
+  transform: rotate(-16deg);
+}
+
+/* BREAK OUT — purple, upper-center */
+.er-gfx-break {
+  top: 1rem;
+  left: 50%;
+  font-size: 1.1rem;
+  color: rgba(200, 120, 255, 0.38);
+  text-shadow: 1px 1px 0 rgba(30, 10, 45, 0.45);
+  transform: translateX(-50%) rotate(3deg);
 }
 
 .er-play-header {
