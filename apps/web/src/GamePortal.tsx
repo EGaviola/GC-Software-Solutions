@@ -59,10 +59,18 @@ type Props = {
   completedMissionIds: string[]
   escapedRoomIds: string[]
   completedResearchIds: string[]
+  completedScenarioIds: string[]
   onSelect: (mode: GameMode) => void
 }
 
-export default function GamePortal({ totalXp, completedMissionIds, escapedRoomIds, completedResearchIds, onSelect }: Props) {
+export default function GamePortal({
+  totalXp,
+  completedMissionIds,
+  escapedRoomIds,
+  completedResearchIds,
+  completedScenarioIds,
+  onSelect,
+}: Props) {
   const daily = getDailyChallenge()
   const weeklyTheme = getWeeklyTheme()
   const seasonal = getSeasonalEvent()
@@ -107,6 +115,8 @@ export default function GamePortal({ totalXp, completedMissionIds, escapedRoomId
             progress = `${escapedRoomIds.length}/6 rooms escaped`
           } else if (card.mode === 'research') {
             progress = `${completedResearchIds.length}/3 investigations done`
+          } else if (card.mode === 'scenarios') {
+            progress = `${completedScenarioIds.length}/3 scenarios completed`
           }
 
           return (
@@ -143,6 +153,10 @@ export default function GamePortal({ totalXp, completedMissionIds, escapedRoomId
         <div className="stat-chip">
           <span className="stat-label">Research Reports</span>
           <span className="stat-value">🔬 {completedResearchIds.length}</span>
+        </div>
+        <div className="stat-chip">
+          <span className="stat-label">Scenarios</span>
+          <span className="stat-value">🌍 {completedScenarioIds.length}</span>
         </div>
       </div>
     </div>
