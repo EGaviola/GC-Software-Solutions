@@ -766,6 +766,7 @@ function App() {
           completedMissionIds={completedMissionIds}
           escapedRoomIds={escapedRoomIds}
           completedResearchIds={completedResearchIds}
+          completedScenarioIds={completedScenarioIds}
           onSelect={(mode) => setGameMode(mode)}
         />
       )}
