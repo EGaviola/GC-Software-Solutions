@@ -48,12 +48,29 @@ export default function MiniGamePlay({ onXpEarned, onBack }: Props) {
   }, [currentQ, selectedGame, gameOver, showResult])
 
   useEffect(() => {
-    if (!timedOut) return
+    if (!timedOut || !selectedGame) return
+    const isLast = currentQ === selectedGame.questions.length - 1
+    const earned = 0
     const timeout = setTimeout(() => {
-      advanceQuestion(false)
+      setScore((prev) => prev + 0)
+      setTotalXpEarned((prev) => {
+        const newXp = prev + earned
+        setTimeout(() => {
+          if (isLast) {
+            setGameOver(true)
+            onXpEarned(newXp)
+          } else {
+            setCurrentQ((q) => q + 1)
+          }
+          setSelectedChoice(null)
+          setShowResult(null)
+          setTimedOut(false)
+        }, 0)
+        return newXp
+      })
     }, 1800)
     return () => clearTimeout(timeout)
-  }, [timedOut])
+  }, [timedOut, selectedGame, currentQ, onXpEarned])
 
   const advanceQuestion = (correct: boolean) => {
     if (!selectedGame) return
