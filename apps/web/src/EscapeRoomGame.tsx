@@ -193,7 +193,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
                 onClick={() => openBrick(i)}
                 disabled={solved || showResult !== null || (roomState.activePuzzleIndex !== null && !active)}
               >
-                <span className="er-brick-number">Brick {i + 1}</span>
+                <span className="er-brick-label">Brick {i + 1}</span>
                 <span className="er-brick-status">
                   {solved ? 'Solved' : active ? 'Question exposed' : 'Tap to reveal'}
                 </span>
@@ -278,7 +278,7 @@ export default function EscapeRoomGame({ escapedRoomIds, onEscape, onBack }: Pro
       ) : (
         <div className="er-puzzle-card er-hidden-puzzle-card">
           <div className="er-puzzle-header">
-            <span className="er-puzzle-step">Question hidden</span>
+            <span className="er-hidden-status">Question hidden</span>
             <h3>Choose a brick to reveal the next challenge</h3>
           </div>
           <p className="er-clue">

@@ -755,7 +755,7 @@ td {
   border-color: rgba(20, 83, 45, 0.95);
 }
 
-.er-brick-number {
+.er-brick-label {
   font-size: 0.95rem;
   font-weight: 800;
 }
@@ -830,6 +830,13 @@ td {
 
 .er-hidden-puzzle-card {
   background: rgba(255, 250, 243, 0.96);
+}
+
+.er-hidden-status {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7a91a8;
 }
 
 .er-puzzle-header {
