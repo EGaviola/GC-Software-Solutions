@@ -671,6 +671,11 @@ function App() {
     await loadParentDashboard()
   }
 
+  const goToGamePortal = () => {
+    setView('game')
+    setGameMode('portal')
+  }
+
   return (
     <main className="screen">
       <header className="topbar">
@@ -694,7 +699,7 @@ function App() {
       </header>
 
       <nav className="tabs">
-        <button type="button" className={view === 'game' ? 'tab active' : 'tab'} onClick={() => { setView('game'); setGameMode('portal') }}>
+        <button type="button" className={view === 'game' ? 'tab active' : 'tab'} onClick={goToGamePortal}>
           🎮 Game Portal
         </button>
         <button type="button" className={view === 'teacher' ? 'tab active' : 'tab'} onClick={() => setView('teacher')}>

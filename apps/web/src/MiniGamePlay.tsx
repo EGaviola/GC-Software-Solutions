@@ -39,37 +39,42 @@ export default function MiniGamePlay({ onXpEarned, onBack }: Props) {
           clearTimer()
           setTimedOut(true)
           setShowResult('incorrect')
-          setTimeout(() => {
-            advanceQuestion(false)
-          }, 1800)
           return 0
         }
         return t - 1
       })
     }, 1000)
     return clearTimer
-  }, [currentQ, selectedGame, gameOver])
+  }, [currentQ, selectedGame, gameOver, showResult])
+
+  useEffect(() => {
+    if (!timedOut) return
+    const timeout = setTimeout(() => {
+      advanceQuestion(false)
+    }, 1800)
+    return () => clearTimeout(timeout)
+  }, [timedOut])
 
   const advanceQuestion = (correct: boolean) => {
     if (!selectedGame) return
     const earned = correct ? selectedGame.xpPerCorrect : 0
-    const newScore = score + (correct ? 1 : 0)
-    const newXp = totalXpEarned + earned
-    setScore(newScore)
-    setTotalXpEarned(newXp)
-
-    const isLast = currentQ === selectedGame.questions.length - 1
-    setTimeout(() => {
-      if (isLast) {
-        setGameOver(true)
-        onXpEarned(newXp)
-      } else {
-        setCurrentQ(currentQ + 1)
-      }
-      setSelectedChoice(null)
-      setShowResult(null)
-      setTimedOut(false)
-    }, 1800)
+    setScore((prev) => prev + (correct ? 1 : 0))
+    setTotalXpEarned((prev) => {
+      const newXp = prev + earned
+      const isLast = currentQ === selectedGame.questions.length - 1
+      setTimeout(() => {
+        if (isLast) {
+          setGameOver(true)
+          onXpEarned(newXp)
+        } else {
+          setCurrentQ((q) => q + 1)
+        }
+        setSelectedChoice(null)
+        setShowResult(null)
+        setTimedOut(false)
+      }, 1800)
+      return newXp
+    })
   }
 
   const submitAnswer = () => {

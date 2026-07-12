@@ -270,7 +270,7 @@ export const dailyChallengePool: DailyChallenge[] = [
 export function getDailyChallenge(): DailyChallenge {
   const today = new Date()
   const dayOfYear = Math.floor(
-    (today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24)
+    (today.getTime() - new Date(today.getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24)
   )
   return dailyChallengePool[dayOfYear % dailyChallengePool.length]
 }
